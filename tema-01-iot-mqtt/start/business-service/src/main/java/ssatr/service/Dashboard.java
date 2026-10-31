@@ -48,7 +48,7 @@ public class Dashboard {
                     : String.format(Locale.US, "%.2f", state.temperature);
             long ageSeconds = Math.max(0, (now - state.lastMessageTimestamp) / 1000);
             System.out.printf("%-16s %-10s %-18s %d%n",
-                    entry.getKey(), temperature, ageSeconds + " s în urmă", state.alarmCount);
+                    entry.getKey(), temperature, ageSeconds + " s in urma", state.alarmCount);
         }
     }
 

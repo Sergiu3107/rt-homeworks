@@ -55,14 +55,14 @@ public class CommandConsole implements Runnable {
         //   Afișați un mesaj de eroare dacă linia nu are formatul corect.
         Matcher matcher = DEVICE_COMMAND_PATTERN.matcher(line.trim());
         if (!matcher.matches()) {
-            System.out.println("Comandă invalidă. Tastați help pentru a vedea comenzile disponibile.");
+            System.out.println("Comanda invalida. Tastati help pentru a vedea comenzile disponibile.");
             return;
         }
 
         String deviceId = matcher.group(1);
         String command = matcher.group(2).replaceAll("\\s+", " ");
         mqtt.publish(Config.commandTopic(deviceId), command);
-        System.out.println("Comandă trimisă către " + deviceId + ": " + command);
+        System.out.println("Comanda trimisa catre " + deviceId + ": " + command);
     }
 
     private void printHelp() {
