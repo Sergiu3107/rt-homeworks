@@ -42,7 +42,7 @@ public class MessageProcessor implements Runnable {
                 try {
                     process(message);
                 } catch (IllegalArgumentException e) {
-                    System.out.printf("[invalid %s message] %s%n", kind, message);
+                    System.out.printf("[mesaj %s invalid] %s%n", kind, message);
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -79,7 +79,7 @@ public class MessageProcessor implements Runnable {
         parseNumber(fields[2], "temperature");
         parseNumber(fields[3], "threshold");
         dashboard.updateAlarm(deviceId, timestamp);
-        System.out.printf("[ALARM] %s%n", message);
+        System.out.printf("[ALARMĂ] %s%n", message);
     }
 
     private void processStatus(String[] fields, String deviceId, String message) {
@@ -89,7 +89,7 @@ public class MessageProcessor implements Runnable {
             throw new IllegalArgumentException("Missing status text");
         }
         dashboard.updateStatus(deviceId, timestamp);
-        System.out.printf("[STATUS] %s%n", message);
+        System.out.printf("[STARE] %s%n", message);
     }
 
     private static void requireFieldCount(String[] fields, int expected) {

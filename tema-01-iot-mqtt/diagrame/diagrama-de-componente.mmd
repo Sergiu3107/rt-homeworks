@@ -1,11 +1,11 @@
 flowchart LR
-    D["Device simulator<br/>Periodic: telemetry<br/>Sporadic: alarms<br/>Aperiodic: commands"]
-    B(("MQTT broker"))
-    S["Business service<br/>Receives messages<br/>Stores CSV and shows dashboard"]
-    O["Operator<br/>Views status and sends commands"]
+    D["Simulator dispozitiv<br/>Periodic: telemetrie<br/>Sporadic: alarme<br/>Aperiodic: comenzi"]
+    B(("Broker MQTT"))
+    S["Serviciu business<br/>Primește mesaje<br/>Salvează în CSV și afișează panoul"]
+    O["Operator<br/>Consultă starea și trimite comenzi"]
 
-    D -->|"telemetry, alarms, status"| B
-    B -->|"telemetry, alarms, status"| S
-    O -->|"commands"| S
-    S -->|"commands"| B
-    B -->|"commands"| D
+    D -->|"telemetrie, alarme, stare"| B
+    B -->|"telemetrie, alarme, stare"| S
+    O -->|"comenzi"| S
+    S -->|"comenzi"| B
+    B -->|"comenzi"| D

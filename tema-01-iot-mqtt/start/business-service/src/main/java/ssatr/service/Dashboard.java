@@ -39,7 +39,7 @@ public class Dashboard {
         // TODO 5: afișați câte un rând pentru fiecare device, de exemplu:
         //   DEVICE     TEMP    ULTIMUL MESAJ   ALARME
         //   device-1   23.41   acum 1 s        2
-        System.out.printf("%-16s %-10s %-18s %s%n", "DEVICE", "TEMP", "LATEST MESSAGE", "ALARMS");
+        System.out.printf("%-16s %-10s %-18s %s%n", "DISPOZITIV", "TEMP.", "ULTIMUL MESAJ", "ALARME");
         long now = System.currentTimeMillis();
         for (Map.Entry<String, DeviceState> entry : devices.entrySet()) {
             DeviceState state = entry.getValue();
@@ -47,8 +47,8 @@ public class Dashboard {
                     ? "--"
                     : String.format(Locale.US, "%.2f", state.temperature);
             long ageSeconds = Math.max(0, (now - state.lastMessageTimestamp) / 1000);
-                System.out.printf("%-16s %-10s %-18s %d%n",
-                    entry.getKey(), temperature, ageSeconds + " s ago", state.alarmCount);
+            System.out.printf("%-16s %-10s %-18s %d%n",
+                    entry.getKey(), temperature, ageSeconds + " s în urmă", state.alarmCount);
         }
     }
 

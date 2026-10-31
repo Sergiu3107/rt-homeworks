@@ -1,25 +1,25 @@
 sequenceDiagram
     actor Operator
-    participant Service as Business service
-    participant Broker as MQTT broker
-    participant Device as Device
+    participant Service as Serviciu business
+    participant Broker as Broker MQTT
+    participant Device as Dispozitiv
 
-    Note over Device,Service: 1. Temperature exceeds the threshold
-    Device->>Device: Read temperature and detect threshold exceedance
-    Device->>Broker: Publish telemetry
-    Broker->>Service: Deliver telemetry
-    Service->>Service: Save message and update dashboard
-    Device->>Broker: Publish alarm (if the minimum interval is met)
-    Broker->>Service: Deliver alarm
-    Service->>Service: Save alarm and update dashboard
-    Service-->>Operator: Display alarm
+    Note over Device,Service: 1. Temperatura depășește pragul
+    Device->>Device: Citește temperatura și detectează depășirea
+    Device->>Broker: Publică telemetria
+    Broker->>Service: Livrează telemetria
+    Service->>Service: Salvează mesajul și actualizează panoul
+    Device->>Broker: Publică alarma dacă respectă intervalul minim
+    Broker->>Service: Livrează alarma
+    Service->>Service: Salvează alarma și actualizează panoul
+    Service-->>Operator: Afișează alarma
 
-    Note over Operator,Device: 2. Operator changes the interval
+    Note over Operator,Device: 2. Operatorul schimbă intervalul
     Operator->>Service: device-1 SET_INTERVAL 1000
-    Service->>Broker: Publish SET_INTERVAL 1000
-    Broker->>Device: Deliver command
-    Device->>Device: Set interval to 1000 ms
-    Device->>Broker: Publish status: OK SET_INTERVAL 1000
-    Broker->>Service: Deliver confirmation
-    Service->>Service: Save message and update dashboard
-    Service-->>Operator: Display confirmation
+    Service->>Broker: Publică SET_INTERVAL 1000
+    Broker->>Device: Livrează comanda
+    Device->>Device: Setează intervalul la 1000 ms
+    Device->>Broker: Publică starea: OK SET_INTERVAL 1000
+    Broker->>Service: Livrează confirmarea
+    Service->>Service: Salvează mesajul și actualizează panoul
+    Service-->>Operator: Afișează confirmarea

@@ -21,7 +21,7 @@ public class DeviceSimulator {
 
     public static void main(String[] args) throws Exception {
         String deviceId = args.length > 0 ? args[0] : "device-1";
-        System.out.println("Starting simulator for " + deviceId);
+        System.out.println("Pornire simulator pentru " + deviceId);
 
         TemperatureSensor sensor = new TemperatureSensor();
 

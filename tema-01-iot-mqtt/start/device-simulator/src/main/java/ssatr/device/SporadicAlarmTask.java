@@ -49,7 +49,7 @@ public class SporadicAlarmTask implements Runnable {
 
                 if (lastReleaseNanos != Long.MIN_VALUE
                         && arrivalNanos - lastReleaseNanos < minimumInterarrivalNanos) {
-                    System.out.printf("[alarm] REJECTED: interval below %d ms%n", MIN_INTERARRIVAL_MS);
+                    System.out.printf("[alarmă] RESPINSĂ: interval sub %d ms%n", MIN_INTERARRIVAL_MS);
                     continue;
                 }
 
