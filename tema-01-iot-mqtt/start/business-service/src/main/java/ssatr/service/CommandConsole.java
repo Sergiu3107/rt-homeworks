@@ -1,6 +1,8 @@
 package ssatr.service;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Consola operatorului: citește comenzi de la tastatură.
@@ -12,6 +14,9 @@ import java.util.Scanner;
  *   exit                               oprește serviciul
  */
 public class CommandConsole implements Runnable {
+
+    private static final Pattern DEVICE_COMMAND_PATTERN = Pattern.compile(
+            "([^/+#\\s]+)\\s+(SET_INTERVAL\\s+\\S+|SET_THRESHOLD\\s+\\S+|RESET|STATUS)");
 
     private final MqttConnection mqtt;
     private final Dashboard dashboard;
@@ -48,11 +53,20 @@ public class CommandConsole implements Runnable {
         //   ("device-1 SET_INTERVAL 1000" -> "device-1" și "SET_INTERVAL 1000")
         //   și publicați comanda pe Config.commandTopic(deviceId).
         //   Afișați un mesaj de eroare dacă linia nu are formatul corect.
-        System.out.println("(trimiterea comenzilor neimplementată): " + line);
+        Matcher matcher = DEVICE_COMMAND_PATTERN.matcher(line.trim());
+        if (!matcher.matches()) {
+            System.out.println("Comanda invalida. Tastati help pentru a vedea comenzile disponibile.");
+            return;
+        }
+
+        String deviceId = matcher.group(1);
+        String command = matcher.group(2).replaceAll("\\s+", " ");
+        mqtt.publish(Config.commandTopic(deviceId), command);
+        System.out.println("Comanda trimisa catre " + deviceId + ": " + command);
     }
 
     private void printHelp() {
         System.out.println("Comenzi: show | <deviceId> SET_INTERVAL <ms> | <deviceId> SET_THRESHOLD <valoare>");
-        System.out.println("         <deviceId> RESET | <deviceId> STATUS | help | exit");
+        System.out.println("          <deviceId> RESET | <deviceId> STATUS | help | exit");
     }
 }

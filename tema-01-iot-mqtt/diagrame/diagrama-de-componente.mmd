@@ -1,0 +1,11 @@
+flowchart LR
+    D["Simulator dispozitiv<br/>Periodic: telemetrie<br/>Sporadic: alarme<br/>Aperiodic: comenzi"]
+    B(("Broker MQTT"))
+    S["Serviciu business<br/>Primește mesaje<br/>Salvează în CSV și afișează panoul"]
+    O["Operator<br/>Consultă starea și trimite comenzi"]
+
+    D -->|"telemetrie, alarme, stare"| B
+    B -->|"telemetrie, alarme, stare"| S
+    O -->|"comenzi"| S
+    S -->|"comenzi"| B
+    B -->|"comenzi"| D

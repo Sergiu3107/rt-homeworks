@@ -1,0 +1,23 @@
+gantt
+    title Taskurile dispozitivului (0–10 s)
+    dateFormat YYYY-MM-DD HH:mm:ss.SSS
+    axisFormat %S s
+    tickInterval 1second
+    todayMarker off
+
+    section Periodic (T=2 s)
+    Execuția 0 :active, 1970-01-01 00:00:00.000, 200ms
+    Execuția 1 :active, 1970-01-01 00:00:02.000, 200ms
+    Execuția 2 :active, 1970-01-01 00:00:04.000, 200ms
+    Execuția 3 :active, 1970-01-01 00:00:06.000, 200ms
+    Execuția 4 :active, 1970-01-01 00:00:08.000, 200ms
+
+    section Sporadic (interval minim 5 s)
+    Alarmă acceptată :milestone, 1970-01-01 00:00:02.000, 0s
+    Alarmă respinsă (după doar 2 s) :crit, milestone, 1970-01-01 00:00:04.000, 0s
+
+    section Aperiodic (fără perioadă fixă)
+    Comanda STATUS :active, 1970-01-01 00:00:05.500, 200ms
+
+    section Fereastra observată
+    Sfârșit (10 s) :milestone, 1970-01-01 00:00:10.000, 0s

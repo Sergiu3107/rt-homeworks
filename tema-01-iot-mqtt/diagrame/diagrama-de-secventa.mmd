@@ -1,0 +1,25 @@
+sequenceDiagram
+    actor Operator
+    participant Service as Serviciu business
+    participant Broker as Broker MQTT
+    participant Device as Dispozitiv
+
+    Note over Device,Service: 1. Temperatura depășește pragul
+    Device->>Device: Citește temperatura și detectează depășirea
+    Device->>Broker: Publică telemetria
+    Broker->>Service: Livrează telemetria
+    Service->>Service: Salvează mesajul și actualizează panoul
+    Device->>Broker: Publică alarma dacă respectă intervalul minim
+    Broker->>Service: Livrează alarma
+    Service->>Service: Salvează alarma și actualizează panoul
+    Service-->>Operator: Afișează alarma
+
+    Note over Operator,Device: 2. Operatorul schimbă intervalul
+    Operator->>Service: device-1 SET_INTERVAL 1000
+    Service->>Broker: Publică SET_INTERVAL 1000
+    Broker->>Device: Livrează comanda
+    Device->>Device: Setează intervalul la 1000 ms
+    Device->>Broker: Publică starea: OK SET_INTERVAL 1000
+    Broker->>Service: Livrează confirmarea
+    Service->>Service: Salvează mesajul și actualizează panoul
+    Service-->>Operator: Afișează confirmarea

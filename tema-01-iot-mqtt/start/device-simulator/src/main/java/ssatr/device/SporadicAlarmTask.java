@@ -1,6 +1,8 @@
 package ssatr.device;
 
+import java.util.Locale;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * TASK SPORADIC: tratează alarmele de temperatură.
@@ -17,9 +19,9 @@ public class SporadicAlarmTask implements Runnable {
 
     private final String deviceId;
     private final MqttConnection mqtt;
-    private final BlockingQueue<Double> alarmEvents;
+    private final BlockingQueue<AlarmEvent> alarmEvents;
 
-    public SporadicAlarmTask(String deviceId, MqttConnection mqtt, BlockingQueue<Double> alarmEvents) {
+    public SporadicAlarmTask(String deviceId, MqttConnection mqtt, BlockingQueue<AlarmEvent> alarmEvents) {
         this.deviceId = deviceId;
         this.mqtt = mqtt;
         this.alarmEvents = alarmEvents;
@@ -37,5 +39,30 @@ public class SporadicAlarmTask implements Runnable {
         //      citit din PeriodicTelemetryTask; alegeți și justificați în raport)
         //
         // Vezi exemplul exemple/01-taskuri/.../SporadicTaskExample.java
+        long lastReleaseNanos = Long.MIN_VALUE;
+        long minimumInterarrivalNanos = TimeUnit.MILLISECONDS.toNanos(MIN_INTERARRIVAL_MS);
+
+        try {
+            while (!Thread.currentThread().isInterrupted()) {
+                AlarmEvent event = alarmEvents.take();
+                long arrivalNanos = event.arrivalTimeNanos();
+
+                if (lastReleaseNanos != Long.MIN_VALUE
+                        && arrivalNanos - lastReleaseNanos < minimumInterarrivalNanos) {
+                    System.out.printf("[alarma] RESPINSA: interval sub %d ms%n", MIN_INTERARRIVAL_MS);
+                    continue;
+                }
+
+                lastReleaseNanos = arrivalNanos;
+                String message = String.format(Locale.US, "%s;%d;%.2f;%.2f",
+                        deviceId, System.currentTimeMillis(), event.temperature(), event.threshold());
+                mqtt.publish(Config.alarmTopic(deviceId), message);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
+}
+
+record AlarmEvent(double temperature, double threshold, long arrivalTimeNanos) {
 }
