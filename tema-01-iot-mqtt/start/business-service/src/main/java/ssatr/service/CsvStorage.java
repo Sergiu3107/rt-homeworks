@@ -46,7 +46,7 @@ public class CsvStorage {
 
             Files.writeString(file, message + "\n", StandardOpenOption.CREATE, StandardOpenOption.APPEND);
         } catch (IOException e) {
-            System.out.println("Eroare la scrierea în " + file + ": " + e.getMessage());
+            System.out.println("Failed to write to " + file + ": " + e.getMessage());
         }
     }
 

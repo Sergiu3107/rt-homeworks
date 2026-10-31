@@ -30,7 +30,7 @@ public class MqttConnection {
         options.setCleanSession(true);
         options.setAutomaticReconnect(true);
         client.connect(options);
-        System.out.println("Conectat la " + Config.BROKER);
+        System.out.println("Connected to " + Config.BROKER);
     }
 
     /** Publică un mesaj text (QoS 1). */
@@ -40,7 +40,7 @@ public class MqttConnection {
             message.setQos(1);
             client.publish(topic, message);
         } catch (MqttException e) {
-            System.out.println("Eroare la publicare pe " + topic + ": " + e.getMessage());
+            System.out.println("Failed to publish to " + topic + ": " + e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class MqttConnection {
      */
     public void subscribe(String topicFilter, BlockingQueue<String> inbox) throws MqttException {
         client.subscribe(topicFilter, 1, (topic, message) -> inbox.put(new String(message.getPayload())));
-        System.out.println("Abonat la " + topicFilter);
+        System.out.println("Subscribed to " + topicFilter);
     }
 
     public void disconnect() throws MqttException {

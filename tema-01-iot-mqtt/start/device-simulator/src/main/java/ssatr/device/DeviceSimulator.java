@@ -21,7 +21,7 @@ public class DeviceSimulator {
 
     public static void main(String[] args) throws Exception {
         String deviceId = args.length > 0 ? args[0] : "device-1";
-        System.out.println("Pornire simulator pentru " + deviceId);
+        System.out.println("Starting simulator for " + deviceId);
 
         TemperatureSensor sensor = new TemperatureSensor();
 
@@ -29,7 +29,7 @@ public class DeviceSimulator {
         mqtt.connect();
 
         // cozile prin care comunică taskurile
-        BlockingQueue<Double> alarmEvents = new LinkedBlockingQueue<>();
+        BlockingQueue<AlarmEvent> alarmEvents = new LinkedBlockingQueue<>();
         BlockingQueue<String> commands = new LinkedBlockingQueue<>();
 
         // comenzile primite pe MQTT ajung direct în coada commands
