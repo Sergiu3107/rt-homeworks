@@ -1,0 +1,25 @@
+sequenceDiagram
+    actor Operator
+    participant Service as Business service
+    participant Broker as MQTT broker
+    participant Device as Device
+
+    Note over Device,Service: 1. Temperature exceeds the threshold
+    Device->>Device: Read temperature and detect threshold exceedance
+    Device->>Broker: Publish telemetry
+    Broker->>Service: Deliver telemetry
+    Service->>Service: Save message and update dashboard
+    Device->>Broker: Publish alarm (if the minimum interval is met)
+    Broker->>Service: Deliver alarm
+    Service->>Service: Save alarm and update dashboard
+    Service-->>Operator: Display alarm
+
+    Note over Operator,Device: 2. Operator changes the interval
+    Operator->>Service: device-1 SET_INTERVAL 1000
+    Service->>Broker: Publish SET_INTERVAL 1000
+    Broker->>Device: Deliver command
+    Device->>Device: Set interval to 1000 ms
+    Device->>Broker: Publish status: OK SET_INTERVAL 1000
+    Broker->>Service: Deliver confirmation
+    Service->>Service: Save message and update dashboard
+    Service-->>Operator: Display confirmation
